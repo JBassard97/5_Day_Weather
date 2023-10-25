@@ -1,0 +1,30 @@
+body {
+    background-color: darkcyan;
+}
+
+header {
+    background-image: url("./Images/header-background.jpg");
+}
+
+.btn {
+    width: 216px;
+    background-color: rgb(77, 8, 168);
+}
+
+#city-button {
+    margin-top: .5rem;
+}
+
+.card {
+    width: 80px;
+    color: black;
+}
+
+p {
+    font-size: small;
+}
+
+.justify-content-space-evenly {
+    display: flex;
+    justify-content: space-evenly;
+  }
