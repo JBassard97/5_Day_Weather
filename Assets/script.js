@@ -29,9 +29,7 @@ $(document).ready(function () {
   const cityNameDisplay = $("#city-name");
   const currentDateDisplay = $("#current-date");
   currentDateDisplay.text(" (" + today.format("dddd, MMMM D") + ")");
-  const weatherEmojiHere = $("#weather-emoji-here");
-
-  // Grabbing forecast display elements
+  const currentEmojiDisplay = $("#weather-emoji-0");
   const tempDisplay = $("#temp-0");
   const windDisplay = $("#wind-0");
   const humidDisplay = $("#humid-0");
@@ -77,12 +75,18 @@ $(document).ready(function () {
         return response.json();
       })
       .then((data) => {
-        // console.log(data);
+        console.log(data);
+        const currentIconCode = data.weather[0].icon;
         var currentTemp = Math.round(data.main.temp);
         var currentWind = Math.round(data.wind.speed);
         var currentHumidity = Math.round(data.main.humidity);
         var cityName = userCurrentCity;
-        displayCurrentWeather(currentTemp, currentWind, currentHumidity);
+        displayCurrentWeather(
+          currentIconCode,
+          currentTemp,
+          currentWind,
+          currentHumidity
+        );
         fetchForecastByCity(cityName);
       })
       .catch((error) => {
@@ -90,7 +94,19 @@ $(document).ready(function () {
       });
   }
 
-  function displayCurrentWeather(currentTemp, currentWind, currentHumidity) {
+  function displayCurrentWeather(
+    currentIconCode,
+    currentTemp,
+    currentWind,
+    currentHumidity
+  ) {
+    console.log(currentIconCode);
+
+    // This link gives us access to all icons from OpenWeather dynamically!
+    currentEmojiDisplay.attr(
+      "src",
+      `https://openweathermap.org/img/wn/${currentIconCode}@2x.png`
+    );
     tempDisplay.text(currentTemp);
     windDisplay.text(currentWind);
     humidDisplay.text(currentHumidity);
@@ -124,10 +140,12 @@ $(document).ready(function () {
     for (i = 0; i < forecastArray.length; i++) {
       // console.log(forecastArray[i]);
 
+      const forecastIconCode = forecastArray[i].weather[0].icon;
       const forecastTemp = Math.round(forecastArray[i].main.temp);
       const forecastWind = Math.round(forecastArray[i].wind.speed);
       const forecastHumid = Math.round(forecastArray[i].main.humidity);
 
+      var allIconDisplays = $(`#weather-emoji-${[i]}`);
       var allTempDisplays = $(`#temp-${[i]}`);
       var allWindDisplays = $(`#wind-${[i]}`);
       var allHumidDisplays = $(`#humid-${[i]}`);
@@ -135,6 +153,10 @@ $(document).ready(function () {
       allTempDisplays.text(forecastTemp);
       allWindDisplays.text(forecastWind);
       allHumidDisplays.text(forecastHumid);
+      allIconDisplays.attr(
+        "src",
+        `https://openweathermap.org/img/wn/${forecastIconCode}@2x.png`
+      );
     }
   }
 });

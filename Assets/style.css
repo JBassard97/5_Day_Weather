@@ -29,3 +29,12 @@ p {
     justify-content: space-evenly;
   }
 
+.larger-icon {
+    height: 50px;
+    width: 50px;
+}
+
+.smaller-icon {
+    height: 30px;
+    width: 30px;
+}
