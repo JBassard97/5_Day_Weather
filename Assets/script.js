@@ -75,7 +75,7 @@ $(document).ready(function () {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         const currentIconCode = data.weather[0].icon;
         var currentTemp = Math.round(data.main.temp);
         var currentWind = Math.round(data.wind.speed);
@@ -100,8 +100,6 @@ $(document).ready(function () {
     currentWind,
     currentHumidity
   ) {
-    console.log(currentIconCode);
-
     // This link gives us access to all icons from OpenWeather dynamically!
     currentEmojiDisplay.attr(
       "src",
@@ -159,4 +157,18 @@ $(document).ready(function () {
       );
     }
   }
+
+  citySearchForm.on("submit", function (event) {
+    event.preventDefault();
+    const cityName = locationInput.val();
+    if (cityName) {
+      localStorage.setItem("savedCities", cityName);
+        console.log("You searched for " + cityName + "!");
+        fetchForecastByCity(cityName);
+        cityNameDisplay.text(cityName);
+    } else {
+      // add alert modal later
+      console.log("alert");
+    }
+  });
 });
