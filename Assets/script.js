@@ -34,6 +34,14 @@ $(document).ready(function () {
   const windDisplay = $("#wind-0");
   const humidDisplay = $("#humid-0");
 
+  //   Empty array to get populated from storage on page load
+  var savedCitiesArray = [];
+  var currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
+  if (localStorage.length > 0) {
+    savedCitiesArray.push(...currentParsedCities);
+    console.log("Here's your City Search history: \n", savedCitiesArray);
+  }
+
   fetchCurrentGeoData();
 
   function fetchCurrentGeoData() {
@@ -61,6 +69,13 @@ $(document).ready(function () {
       .catch((error) => {
         console.error("Error:", error);
       });
+  }
+
+  function displaySavedCities(savedCitiesArray) {
+    //   Updating savedCitiesArray, which we'll iterate and display
+    currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
+    savedCitiesArray = currentParsedCities;
+      console.log("Here's your City Search history: \n", savedCitiesArray);
   }
 
   function fetchCurrentWeather(userCurrentCity) {
@@ -158,14 +173,27 @@ $(document).ready(function () {
     }
   }
 
+  function storeCityNames(cityName) {
+    var savedCitiesObject = { cityName };
+
+    savedCitiesArray.push(savedCitiesObject);
+    localStorage.setItem("savedCities", JSON.stringify(savedCitiesArray));
+    displaySavedCities();
+  }
+
   citySearchForm.on("submit", function (event) {
     event.preventDefault();
     const cityName = locationInput.val();
+    //   Clears inputField when submit
+    locationInput.val("");
     if (cityName) {
-      localStorage.setItem("savedCities", cityName);
-        console.log("You searched for " + cityName + "!");
-        fetchForecastByCity(cityName);
-        cityNameDisplay.text(cityName);
+      //   localStorage.setItem("savedCities", cityName);
+      console.log("You searched for " + cityName + "!");
+      fetchForecastByCity(cityName);
+      cityNameDisplay.text(cityName);
+      //   This guarantees the city name will look professional every time
+      cityNameDisplay.css("text-transform", "capitalize");
+      storeCityNames(cityName);
     } else {
       // add alert modal later
       console.log("alert");
