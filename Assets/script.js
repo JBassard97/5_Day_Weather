@@ -73,7 +73,6 @@ $(document).ready(function () {
 
   function displaySavedCities(savedCitiesArray) {
     //   Updating savedCitiesArray, which we'll iterate and display
-    console.log(savedCitiesArray);
     currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
     savedCitiesArray = currentParsedCities;
 
@@ -200,7 +199,7 @@ $(document).ready(function () {
     var savedCitiesObject = { cityName };
     savedCitiesArray.push(savedCitiesObject);
     localStorage.setItem("savedCities", JSON.stringify(savedCitiesArray));
-    displaySavedCities();
+    displaySavedCities(savedCitiesArray);
   }
 
   function displayRecommendedCities(event) {
