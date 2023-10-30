@@ -33,9 +33,8 @@ $(document).ready(function () {
 
   //   Empty array to get populated from storage on page load
   var savedCitiesArray = [];
-  //   var currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
 
-  if (localStorage.length >= 1) {
+  if (localStorage.length > 0) {
     var currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
     savedCitiesArray.push(currentParsedCities);
     console.log("Here's your City Search history: \n", savedCitiesArray);
@@ -74,8 +73,12 @@ $(document).ready(function () {
 
   function displaySavedCities(savedCitiesArray) {
     //   Updating savedCitiesArray, which we'll iterate and display
-    currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
-    savedCitiesArray = currentParsedCities;
+    if (localStorage.length > 0) {
+      currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
+      savedCitiesArray = currentParsedCities;
+    } else {
+      savedCitiesArray = [];
+    }
 
     $("#saved-city-list").text("");
 
