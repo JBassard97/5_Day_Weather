@@ -35,9 +35,10 @@ $(document).ready(function () {
 
   //   Empty array to get populated from storage on page load
   var savedCitiesArray = [];
-  const currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
+  //   var currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
 
-  if (localStorage.length > 0) {
+  if (localStorage.length >= 1) {
+    var currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
     savedCitiesArray.push(currentParsedCities);
     console.log("Here's your City Search history: \n", savedCitiesArray);
     displaySavedCities(savedCitiesArray);
@@ -255,8 +256,5 @@ $(document).ready(function () {
     if (!cityName) {
       showErrorModal("You can't search for nowhere!");
     }
-    
-    
-    
   });
 });
