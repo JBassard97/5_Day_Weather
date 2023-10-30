@@ -23,7 +23,6 @@ $(document).ready(function () {
   // Grabbing form elements
   const citySearchForm = $("#city-search");
   const locationInput = $("#location-input");
-  const searchButton = $("#search-button");
 
   // Grabbing current display elements
   const cityNameDisplay = $("#city-name");
@@ -37,9 +36,11 @@ $(document).ready(function () {
   //   Empty array to get populated from storage on page load
   var savedCitiesArray = [];
   var currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
+
   if (localStorage.length > 0) {
     savedCitiesArray.push(...currentParsedCities);
     console.log("Here's your City Search history: \n", savedCitiesArray);
+    displaySavedCities(savedCitiesArray);
   }
 
   fetchCurrentGeoData();
@@ -68,6 +69,7 @@ $(document).ready(function () {
       })
       .catch((error) => {
         console.error("Error:", error);
+        showErrorModal("We couldn't find your current location!");
       });
   }
 
@@ -75,7 +77,25 @@ $(document).ready(function () {
     //   Updating savedCitiesArray, which we'll iterate and display
     currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
     savedCitiesArray = currentParsedCities;
-      console.log("Here's your City Search history: \n", savedCitiesArray);
+
+    $("#saved-city-list").text("");
+
+    for (i = 0; i < savedCitiesArray.length; i++) {
+      const cityToDisplay = savedCitiesArray[i].cityName;
+      var savedCityButton = $("<button>", {
+        id: "saved-city-button",
+        class: "btn btn-primary mb-1",
+        text: cityToDisplay,
+        style: "text-transform: capitalize;",
+        click: function () {
+          cityName = cityToDisplay;
+          cityNameDisplay.text(cityName);
+          cityNameDisplay.css("text-transform", "capitalize");
+          fetchForecastByCity(cityName);
+        },
+      });
+      $("#saved-city-list").append(savedCityButton);
+    }
   }
 
   function fetchCurrentWeather(userCurrentCity) {
@@ -106,6 +126,7 @@ $(document).ready(function () {
       })
       .catch((error) => {
         console.error("Error:", error);
+        showErrorModal("We couldn't find the current weather for your area!");
       });
   }
 
@@ -146,6 +167,9 @@ $(document).ready(function () {
       })
       .catch((error) => {
         console.error("Error:", error);
+        showErrorModal(
+          "We couldn't find a city by that name! Please make sure it is spelled correctly."
+        );
       });
   }
 
@@ -175,28 +199,64 @@ $(document).ready(function () {
 
   function storeCityNames(cityName) {
     var savedCitiesObject = { cityName };
-
     savedCitiesArray.push(savedCitiesObject);
     localStorage.setItem("savedCities", JSON.stringify(savedCitiesArray));
     displaySavedCities();
   }
 
+  function displayRecommendedCities(event) {
+    cityName = event.target.textContent;
+    cityNameDisplay.text(cityName);
+    cityNameDisplay.css("text-transform", "capitalize");
+    fetchForecastByCity(cityName);
+  }
+
+  function showErrorModal(message) {
+    $("#errorText").text(message);
+    $("#errorModal").modal("show");
+  }
+
+  $("#close-button").on("click", function () {
+    $("#errorModal").modal("hide");
+  });
+
+  $("#city-button-list").on("click", displayRecommendedCities);
+
+  // Functionality to CLEAR button
+  $("#clear-button").on("click", function () {
+    localStorage.clear();
+    savedCitiesArray = [];
+    $("#saved-city-list").text("");
+  });
+
+  //   Functionality on Form submit
   citySearchForm.on("submit", function (event) {
     event.preventDefault();
+
     const cityName = locationInput.val();
     //   Clears inputField when submit
     locationInput.val("");
-    if (cityName) {
-      //   localStorage.setItem("savedCities", cityName);
+
+    //   Using a search pattern to weed out inputs I know won't work
+    var verifyPattern = /[^a-zA-Z\s]/;
+    if (verifyPattern.test(cityName)) {
+      showErrorModal(
+        "The searched city CANNOT contain numbers or special characters!"
+      );
+    } else {
       console.log("You searched for " + cityName + "!");
       fetchForecastByCity(cityName);
       cityNameDisplay.text(cityName);
       //   This guarantees the city name will look professional every time
       cityNameDisplay.css("text-transform", "capitalize");
       storeCityNames(cityName);
-    } else {
-      // add alert modal later
-      console.log("alert");
     }
+
+    if (!cityName) {
+      showErrorModal("You can't search for nowhere!");
+    }
+    
+    
+    
   });
 });
