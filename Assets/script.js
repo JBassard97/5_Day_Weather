@@ -2,8 +2,6 @@
 $(document).ready(function () {
   // Declaring variables GLOBALLY
   const weatherApiKey = "c31562d6228b1fc62e779b033e352bc0";
-  // const weatherApiUrl = "api.openweathermap.org/data/2.5/forecast?q=durham";
-  // const openWeatherApiUrl = "api.openweathermap.org/data/2.5/forecast?q=`${userCurrentCity}`&appid=`${weatherApiKey}`";
   // Geo JS
   const geoJsApiUrl = "https://get.geojs.io/v1/ip/geo.json";
 
@@ -28,10 +26,10 @@ $(document).ready(function () {
   const cityNameDisplay = $("#city-name");
   const currentDateDisplay = $("#current-date");
   currentDateDisplay.text(" (" + today.format("dddd, MMMM D") + ")");
-  const currentEmojiDisplay = $("#weather-emoji-0");
-  const tempDisplay = $("#temp-0");
-  const windDisplay = $("#wind-0");
-  const humidDisplay = $("#humid-0");
+  var currentEmojiDisplay = $("#weather-emoji-0");
+  var tempDisplay = $("#temp-0");
+  var windDisplay = $("#wind-0");
+  var humidDisplay = $("#humid-0");
 
   //   Empty array to get populated from storage on page load
   var savedCitiesArray = [];
@@ -56,7 +54,7 @@ $(document).ready(function () {
       })
       .then((data) => {
         // console.log(data);
-        const userCurrentCity = data.city;
+        var userCurrentCity = data.city;
         var userCurrentState = data.region;
         console.log(
           "Hello User! You're currently in " +
@@ -82,7 +80,7 @@ $(document).ready(function () {
     $("#saved-city-list").text("");
 
     for (i = 0; i < savedCitiesArray.length; i++) {
-      const cityToDisplay = savedCitiesArray[i].cityName;
+      var cityToDisplay = savedCitiesArray[i].cityName;
       var savedCityButton = $("<button>", {
         id: "saved-city-button",
         class: "btn btn-primary mb-1",
@@ -101,7 +99,7 @@ $(document).ready(function () {
 
   function fetchCurrentWeather(userCurrentCity) {
     // This url gets ONLY the current weather
-    const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${userCurrentCity}&appid=${weatherApiKey}&units=imperial`;
+    var currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${userCurrentCity}&appid=${weatherApiKey}&units=imperial`;
 
     fetch(currentWeatherUrl)
       .then((response) => {
@@ -148,7 +146,7 @@ $(document).ready(function () {
   }
 
   function fetchForecastByCity(cityName) {
-    const forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${weatherApiKey}&units=imperial`;
+    var forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${weatherApiKey}&units=imperial`;
 
     fetch(forecastWeatherUrl)
       .then((response) => {
@@ -178,10 +176,10 @@ $(document).ready(function () {
     for (i = 0; i < forecastArray.length; i++) {
       // console.log(forecastArray[i]);
 
-      const forecastIconCode = forecastArray[i].weather[0].icon;
-      const forecastTemp = Math.round(forecastArray[i].main.temp);
-      const forecastWind = Math.round(forecastArray[i].wind.speed);
-      const forecastHumid = Math.round(forecastArray[i].main.humidity);
+      var forecastIconCode = forecastArray[i].weather[0].icon;
+      var forecastTemp = Math.round(forecastArray[i].main.temp);
+      var forecastWind = Math.round(forecastArray[i].wind.speed);
+      var forecastHumid = Math.round(forecastArray[i].main.humidity);
 
       var allIconDisplays = $(`#weather-emoji-${[i]}`);
       var allTempDisplays = $(`#temp-${[i]}`);
@@ -234,7 +232,7 @@ $(document).ready(function () {
   citySearchForm.on("submit", function (event) {
     event.preventDefault();
 
-    const cityName = locationInput.val();
+    var cityName = locationInput.val();
     //   Clears inputField when submit
     locationInput.val("");
 
