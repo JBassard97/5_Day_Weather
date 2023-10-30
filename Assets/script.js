@@ -73,16 +73,13 @@ $(document).ready(function () {
 
   function displaySavedCities(savedCitiesArray) {
     //   Updating savedCitiesArray, which we'll iterate and display
-    if (localStorage.length > 0) {
-      currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
-      savedCitiesArray = currentParsedCities;
-    } else {
-      savedCitiesArray = [];
-    }
+    console.log(savedCitiesArray);
+    currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
+    savedCitiesArray = currentParsedCities;
 
     $("#saved-city-list").text("");
 
-    for (i = 0; i < savedCitiesArray.length; i++) {
+    for (i = 0; i < savedCitiesArray.length || 0; i++) {
       var cityToDisplay = savedCitiesArray[i].cityName;
       var savedCityButton = $("<button>", {
         id: "saved-city-button",
