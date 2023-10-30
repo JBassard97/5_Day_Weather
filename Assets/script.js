@@ -35,7 +35,7 @@ $(document).ready(function () {
 
   //   Empty array to get populated from storage on page load
   var savedCitiesArray = [];
-  var currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
+  const currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
 
   if (localStorage.length > 0) {
     savedCitiesArray.push(currentParsedCities);
