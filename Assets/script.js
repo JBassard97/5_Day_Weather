@@ -38,7 +38,7 @@ $(document).ready(function () {
   var currentParsedCities = JSON.parse(localStorage.getItem("savedCities"));
 
   if (localStorage.length > 0) {
-    savedCitiesArray.push(...currentParsedCities);
+    savedCitiesArray.push(currentParsedCities);
     console.log("Here's your City Search history: \n", savedCitiesArray);
     displaySavedCities(savedCitiesArray);
   }
