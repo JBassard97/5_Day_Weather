@@ -79,7 +79,7 @@ $(document).ready(function () {
     $("#saved-city-list").text("");
 
     for (i = 0; i < savedCitiesArray.length; i++) {
-      var cityToDisplay = savedCitiesArray[i].cityName;
+      const cityToDisplay = savedCitiesArray[i].cityName;
       var savedCityButton = $("<button>", {
         id: "saved-city-button",
         class: "btn btn-primary mb-1",
