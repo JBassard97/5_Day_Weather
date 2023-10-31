@@ -85,8 +85,8 @@ $(document).ready(function () {
         class: "btn btn-primary mb-1",
         text: cityToDisplay,
         style: "text-transform: capitalize;",
-        click: function () {
-          cityName = cityToDisplay;
+        click: function (event) {
+          cityName = event.target.textContent;
           cityNameDisplay.text(cityName);
           cityNameDisplay.css("text-transform", "capitalize");
           fetchForecastByCity(cityName);
